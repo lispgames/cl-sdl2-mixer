@@ -10,5 +10,6 @@
                     "/usr/local/include/SDL2")
   :include-sources ("SDL_mixer.h")
   :exclude-constants ("^(?!MIX)")
+  :symbol-exceptions (("SDL_RWops" . "SDL-RWOPS"))
   :no-accessors cl:t
   :release-p cl:t)
