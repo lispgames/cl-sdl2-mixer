@@ -1,15 +1,18 @@
 (in-package :sdl2-mixer)
 
 (defun linked-version ()
+  "Returns the version number for SDL Mixer 2"
   (c-let ((version sdl2-ffi:sdl-version :from (mix-linked-version)))
     (values (version :major) (version :minor) (version :patch))))
 
 (autowrap:define-bitmask-from-enum (init-flags sdl2-ffi:mix-init-flags))
 
 (defun init (&rest flags)
+  "Initialize the SDL mixer specifying the formats you wish to use. Must be one of these values or a combination thereof :ogg, :wave, :mod, :mp3"
   (mix-init (mask-apply 'init-flags flags)))
 
 (defun quit ()
+  "Cleans up SDL Mixer"
   (mix-quit))
 
 (autowrap:define-enum-from-constants (audio-format)
@@ -25,14 +28,17 @@
   sdl2-ffi:+audio-s16sys+)
 
 (defun open-audio (frequency format channels chunksize)
+  "Initialize the mixer specifiying the output sample format, number of output channels (1 mono or 2 for stereo), and bytes used per output sample. format must be one of the following values, :u8, :s8, :u16lsb, :s16lsb, :u16msb, :s16msb, :u16, :s16, :u16sys, :s16sys"
   (check-rc (mix-open-audio frequency
                             (enum-value '(:enum (audio-format)) format)
                             channels chunksize)))
 
 (defun close-audio ()
+  "Closes the mixer"
   (mix-close-audio))
 
 (defun query-format ()
+  "Gets the output format in use by the opened audio device"
   (c-with ((freq :int)
            (fmt sdl2-ffi:uint16)
            (chans :int))
