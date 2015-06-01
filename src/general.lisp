@@ -65,4 +65,4 @@
 
 (defun halt-channel (channel)
   "Halt the channel or pass -1 to halt all channels. Always returns 0"
-  (halt-channel channel))
+  (mix-halt-channel channel))
