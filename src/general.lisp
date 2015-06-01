@@ -40,29 +40,30 @@
     (values freq (enum-key '(:enum (audio-format)) fmt) chans)))
 
 (defun load-wav (sample-file-name)
-  "Loads the sample specified by the sample-file-name. Returns a mix-chunk. sdl2-mixer must be initialized and open-audio should be called prior to."
+  "Loads the sample specified by the sample-file-name. Returns a mix-chunk. sdl2-mixer must be initialized and open-audio must be called prior to."
+  ;;Note the original Mix_LoadWAV function is actually a C preprocessor function macro that was not collected by c2ffi. However the manual does state that Mix_LoadWAV is equivalent to calling Mix_LoadWAV_RW(SDL_RWFromFile(file,"rb"), 1) where file is a character array representing the file https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC19
   (autocollect (ptr)
       (check-null (mix-load-wav-rw (sdl-rw-from-file (namestring sample-file-name) "rb") 1))
     (mix-free-chunk ptr)))
 
 (defun free-chunk (chunk)
-  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk."
+  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk. Included for completeness, using this may result in double freeing..."
   (mix-free-chunk chunk))
 
 (defun allocate-channels (channels)
-  "Set the number of channels to be mixed. Opening too many channels may result in a segfault. This can be called at any time even while samples are playing. Passing a number lower than previous calls will close unused channels. It returns the number of channels allocated"
+  "Set the number of channels to be mixed. Opening too many channels may result in a segfault. This can be called at any time even while samples are playing. Passing a number lower than previous calls will close unused channels. It returns the number of channels allocated. NOTE: Channels are 0 indexed!"
   ;;This supposedly never fails so no check is in place
   (mix-allocate-channels channels))
 
 (defun volume (channel volume)
-  "Set the volume on a given channel, pass -1 to set the volume for all channels. The volume may range from 0 to 128. Passing in a number higher than the maximum will automatically set it to the maximum while passing in a negatiev will automatically set it to 0. Returns the current volume of the channel"
+  "Set the volume on a given channel, pass -1 to set the volume for all channels. The volume may range from 0 to 128. Passing in a number higher than the maximum will automatically set it to the maximum while passing in a negatiev will automatically set it to 0. Returns the current volume of the channel. NOTE: Channels are 0 indexed!"
   (mix-volume channel volume))
 
 (defun play-channel (channel mix-chunk loops)
-  "Plays the mix-chunk (sound effect) loops+1 times on a given channel. Passing -1 for the channel will play it on the first unreserved channel. Returns the channel the sample is played on"
+  "Plays the mix-chunk (sound effect) loops+1 times on a given channel. Passing -1 for the channel will play it on the first unreserved channel. Returns the channel the sample is played on. NOTE: Channels are 0 indexed!"
   ;; The original Mix_PlayChannel function is just a function-like C preprocessor macro much like Mix_LoadWAV which was not in the spec. According to the docs Mix_PlayChannel is simply Mix_PlayChannelTimed with ticks set to -1 https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
   (check-rc (mix-play-channel-timed channel mix-chunk loops -1)))
 
 (defun halt-channel (channel)
-  "Halt the channel or pass -1 to halt all channels. Always returns 0"
+  "Halt the channel or pass -1 to halt all channels. Always returns 0. NOTE: Channels are 0 indexed!"
   (mix-halt-channel channel))
