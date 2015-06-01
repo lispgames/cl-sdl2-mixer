@@ -28,6 +28,6 @@
 (defmacro check-null (form)
   (with-gensyms (wrapper)
     `(let ((,wrapper ,form))
-       (if (null-pointer-p (autowrap:ptr ,wrapper))
+       (if (cffi:null-pointer-p (autowrap:ptr ,wrapper))
            (error 'sdl-mixer-error :rc ,wrapper :string (sdl-get-error))
            ,wrapper))))
