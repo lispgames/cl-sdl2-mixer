@@ -70,6 +70,10 @@
   ;; The original Mix_PlayChannel function is just a function-like C preprocessor macro much like Mix_LoadWAV which was not in the spec. According to the docs Mix_PlayChannel is simply Mix_PlayChannelTimed with ticks set to -1 https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
   (check-rc (mix-play-channel-timed channel mix-chunk loops -1)))
 
+(defun playing (channel)
+  "Checks whether or not a channel is currently playing. It will return a 1 for playing and 0 otherwise. Passing -1 for the channel will specify how many channels are playing."
+  (mix-playing channel))
+
 (defun halt-channel (channel)
   "Halt the channel or pass -1 to halt all channels. Always returns 0. NOTE: Channels are 0 indexed!"
   (mix-halt-channel channel))
