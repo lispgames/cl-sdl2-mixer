@@ -9,7 +9,7 @@
 
    ;; General
    #:linked-version
-   #:init #:quit #:open-audio #:close-audio #:query-spec #:load-wav #:allocate-channels #:volume #:play-channel #:halt-channel
+   #:init #:quit #:open-audio #:close-audio #:query-spec #:load-wav #:allocate-channels #:volume #:play-channel #:halt-channel #:playing
    ))
 
 (in-package :sdl2-mixer)
