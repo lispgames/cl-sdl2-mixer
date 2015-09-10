@@ -54,7 +54,9 @@
 
 (defun free-chunk (chunk)
   "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk. Included for completeness, using this may result in double freeing..."
-  (mix-free-chunk chunk))
+  (tg:cancel-finalization chunk)
+  (mix-free-chunk chunk)
+  (autowrap:invalidate chunk))
 
 (defun allocate-channels (channels)
   "Set the number of channels to be mixed. Opening too many channels may result in a segfault. This can be called at any time even while samples are playing. Passing a number lower than previous calls will close unused channels. It returns the number of channels allocated. NOTE: Channels are 0 indexed!"

@@ -45,5 +45,6 @@
                      ;; Ensure all channels have been halted so to safely free any sound chunks we created
                      (sdl2-mixer:halt-channel -1)
                      (sdl2-mixer:close-audio)
+                     (sdl2-mixer:free-chunk sound-effect)
                      (sdl2-mixer:quit)
                      t))))))))
