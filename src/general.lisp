@@ -79,3 +79,9 @@
 (defun halt-channel (channel)
   "Halt the channel or pass -1 to halt all channels. Always returns 0. NOTE: Channels are 0 indexed!"
   (mix-halt-channel channel))
+
+(defun load-music (music-file-name)
+  "Loads music from a file. Returns a mix-music object"
+  (autocollect (ptr)
+      (check-null (mix-load-mus music-file-name))
+    (mix-free-music ptr)))
