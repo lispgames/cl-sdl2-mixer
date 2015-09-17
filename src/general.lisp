@@ -1,5 +1,10 @@
 (in-package :sdl2-mixer)
 
+(defmacro create-sdl-free-function (free-function sdl-object)
+  `(progn (tg:cancel-finalization ,sdl-object)
+          (,free-function ,sdl-object)
+          (autowrap:invalidate ,sdl-object)))
+
 (defun linked-version ()
   "Returns the version number for SDL Mixer 2"
   (c-let ((version sdl2-ffi:sdl-version :from (mix-linked-version)))
@@ -54,9 +59,7 @@
 
 (defun free-chunk (chunk)
   "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk. Included for completeness, using this may result in double freeing..."
-  (tg:cancel-finalization chunk)
-  (mix-free-chunk chunk)
-  (autowrap:invalidate chunk))
+  (create-sdl-free-function mix-free-chunk chunk))
 
 (defun allocate-channels (channels)
   "Set the number of channels to be mixed. Opening too many channels may result in a segfault. This can be called at any time even while samples are playing. Passing a number lower than previous calls will close unused channels. It returns the number of channels allocated. NOTE: Channels are 0 indexed!"
@@ -85,3 +88,6 @@
   (autocollect (ptr)
       (check-null (mix-load-mus music-file-name))
     (mix-free-music ptr)))
+
+(defun free-music (mix-music-object)
+  (create-sdl-free-function mix-free-music mix-music-object))
