@@ -91,3 +91,12 @@
 
 (defun free-music (mix-music-object)
   (create-sdl-free-function mix-free-music mix-music-object))
+
+(defun play-music (mix-music-object &optional (loops -1))
+  "Play the music as many times as specified by the optional loops argument. By default loops is -1 which makes the music loop indefinitely. Returns 0 on success -1 on error"
+  (check-rc (mix-play-music mix-music-object
+                            loops)))
+
+(defun halt-music (mix-music-object)
+  "Halts the playback of all music"
+  (mix-halt-music))
