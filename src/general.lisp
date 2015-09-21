@@ -100,3 +100,7 @@
 (defun halt-music (mix-music-object)
   "Halts the playback of all music"
   (mix-halt-music))
+
+(defun volume-music (music-volume)
+  "Adjust the volume of the music. Volume ranges from 0 to 128. The return value is an integer that usually represents the previous volume setting. Passing -1 as the music volume does not change the volume but instead returns the current volume setting"
+  (mix-volume-music music-volume))
