@@ -36,7 +36,8 @@
   "Initialize the mixer specifiying the output sample format, number of output channels (1 mono or 2 for stereo), and bytes used per output sample. format must be one of the following values, :u8, :s8, :u16lsb, :s16lsb, :u16msb, :s16msb, :u16, :s16, :u16sys, :s16sys"
   (check-rc (mix-open-audio frequency
                             (enum-value '(:enum (audio-format)) format)
-                            channels chunksize)))
+                            channels
+                            chunksize)))
 
 (defun close-audio ()
   "Closes the mixer"
@@ -86,7 +87,7 @@
 (defun load-music (music-file-name)
   "Loads music from a file. Returns a mix-music object"
   (autocollect (ptr)
-      (check-null (mix-load-mus music-file-name))
+      (check-null (mix-load-mus (namestring music-file-name)))
     (mix-free-music ptr)))
 
 (defun free-music (mix-music-object)
@@ -97,7 +98,7 @@
   (check-rc (mix-play-music mix-music-object
                             loops)))
 
-(defun halt-music (mix-music-object)
+(defun halt-music ()
   "Halts the playback of all music"
   (mix-halt-music))
 
