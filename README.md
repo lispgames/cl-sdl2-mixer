@@ -15,9 +15,15 @@ The following functions are currently available to the users
 * `(sdl2-mixer:volume channel volume)`: Set the volume on a given channel, pass -1 to set the volume for all channels. The volume may range from 0 to 128. Passing in a number higher than the maximum will automatically set it to the maximum while passing in a negatiev will automatically set it to 0. Returns the current volume of the channel. NOTE: Channels are 0 indexed! Calls [Mix_Volume](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC27)
 * `(sdl2-mixer:play-channel channel mix-chunk loops)`: Plays the mix-chunk (sound effect) loops+1 times on a given channel. Passing -1 for the channel will play it on the first unreserved channel. Returns the channel the sample is played on. NOTE: Channels are 0 indexed! Calls [Mix_PlayChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC28)
 * `(sdl2-mixer:halt-channel)` Halt the channel or pass -1 to halt all channels. Always returns 0. NOTE: Channels are 0 indexed! Calls [Mix_HaltChannel](https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer.html#SEC34)
+* `(sdl2-mixer:free-chunk chunk)` Free memory used for a given chunk. Do not free the chunk while it's being called. Calls[Mix_FreeChunk](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_frame.html)
+* `(sdl2-mixer:load-music music-file-name)` Loads music from a file. Returns a mix-music object. Calls [Mix_LoadMUS](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_55.html#SEC55)
+* `(sdl2-mixer:free-music mix-music-object)` Free memory used by a music object. Calls [Mix_FreeMusic](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_56.html#SEC56)
+* `(sdl2-mixer:play-music mix-music-object loops)` Play music object looping the number of times specified by the loops argument. -1 plays indefinitely. Calls [Mix_PlayMusic](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_57.html#SEC57)
+* `(sdl2-mixer:halt-music)` Halts all playing music. Calls [Mix_HaltMusic](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_67.html#SEC67)
+* `(sdl2-mixer:volume-music volume)` Sets the music volume to the volume specified. Calls [Mix_VolumeMusic](http://jcatki.no-ip.org:8080/SDL_mixer/SDL_mixer_frame.html)
 
 ## Examples
-A simple example program has been provided. Ogg support is required to run it however. Press the space bar to play the sound effect, the up directional key to increase the volume by 20 and the down directional key to decrease the volume by 20. The current volume is displayed in standard-output
+A simple example program has been provided. Ogg support is required to run it however. Press the space bar to play the sound effect/song, the up directional key to increase the volume by 20 and the down directional key to decrease the volume by 20. The current volume is displayed in standard-output.
 
 ## Issues
 
@@ -29,5 +35,4 @@ If you are sure all of this is correct, and it still will not load, please [file
 * Your platform and architecture
 * Your lisp
 * The absolute path to your installed `.so`, `.dll`, or the appropriate OSX framework
-
 

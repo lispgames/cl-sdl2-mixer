@@ -1,5 +1,10 @@
 (in-package :sdl2-mixer)
 
+(defmacro create-sdl-free-function (free-function sdl-object)
+  `(progn (tg:cancel-finalization ,sdl-object)
+          (,free-function ,sdl-object)
+          (autowrap:invalidate ,sdl-object)))
+
 (defun linked-version ()
   "Returns the version number for SDL Mixer 2"
   (c-let ((version sdl2-ffi:sdl-version :from (mix-linked-version)))
@@ -31,7 +36,8 @@
   "Initialize the mixer specifiying the output sample format, number of output channels (1 mono or 2 for stereo), and bytes used per output sample. format must be one of the following values, :u8, :s8, :u16lsb, :s16lsb, :u16msb, :s16msb, :u16, :s16, :u16sys, :s16sys"
   (check-rc (mix-open-audio frequency
                             (enum-value '(:enum (audio-format)) format)
-                            channels chunksize)))
+                            channels
+                            chunksize)))
 
 (defun close-audio ()
   "Closes the mixer"
@@ -53,8 +59,8 @@
     (mix-free-chunk ptr)))
 
 (defun free-chunk (chunk)
-  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk. Included for completeness, using this may result in double freeing..."
-  (mix-free-chunk chunk))
+  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk."
+  (create-sdl-free-function mix-free-chunk chunk))
 
 (defun allocate-channels (channels)
   "Set the number of channels to be mixed. Opening too many channels may result in a segfault. This can be called at any time even while samples are playing. Passing a number lower than previous calls will close unused channels. It returns the number of channels allocated. NOTE: Channels are 0 indexed!"
@@ -70,6 +76,32 @@
   ;; The original Mix_PlayChannel function is just a function-like C preprocessor macro much like Mix_LoadWAV which was not in the spec. According to the docs Mix_PlayChannel is simply Mix_PlayChannelTimed with ticks set to -1 https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_frame.html
   (check-rc (mix-play-channel-timed channel mix-chunk loops -1)))
 
+(defun playing (channel)
+  "Checks whether or not a channel is currently playing. It will return a 1 for playing and 0 otherwise. Passing -1 for the channel will specify how many channels are playing."
+  (mix-playing channel))
+
 (defun halt-channel (channel)
   "Halt the channel or pass -1 to halt all channels. Always returns 0. NOTE: Channels are 0 indexed!"
   (mix-halt-channel channel))
+
+(defun load-music (music-file-name)
+  "Loads music from a file. Returns a mix-music object"
+  (autocollect (ptr)
+      (check-null (mix-load-mus (namestring music-file-name)))
+    (mix-free-music ptr)))
+
+(defun free-music (mix-music-object)
+  (create-sdl-free-function mix-free-music mix-music-object))
+
+(defun play-music (mix-music-object &optional (loops -1))
+  "Play the music as many times as specified by the optional loops argument. By default loops is -1 which makes the music loop indefinitely. Returns 0 on success -1 on error"
+  (check-rc (mix-play-music mix-music-object
+                            loops)))
+
+(defun halt-music ()
+  "Halts the playback of all music"
+  (mix-halt-music))
+
+(defun volume-music (music-volume)
+  "Adjust the volume of the music. Volume ranges from 0 to 128. The return value is an integer that usually represents the previous volume setting. Passing -1 as the music volume does not change the volume but instead returns the current volume setting"
+  (mix-volume-music music-volume))
