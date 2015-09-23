@@ -59,7 +59,7 @@
     (mix-free-chunk ptr)))
 
 (defun free-chunk (chunk)
-  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk. Included for completeness, using this may result in double freeing..."
+  "Free the memory used in the chunk and then free the chunk itself. Do not free the chunk while it is playing; halt the channel it's playing on using halt-channel prior to freeing the chunk."
   (create-sdl-free-function mix-free-chunk chunk))
 
 (defun allocate-channels (channels)

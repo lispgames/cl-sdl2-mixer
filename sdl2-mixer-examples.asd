@@ -10,4 +10,5 @@
   :depends-on (:sdl2 :sdl2-mixer)
   :pathname "examples"
   :serial t
-  :components ((:file "simple-example")))
+  :components ((:file "simple-example")
+               (:file "music")))
