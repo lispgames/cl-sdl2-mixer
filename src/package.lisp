@@ -25,7 +25,15 @@
    #:free-music
    #:play-music
    #:halt-music
-   #:volume-music))
+   #:volume-music
+   #:pause
+   #:resume
+   #:paused
+   #:get-num-paused-channels
+   #:pause-music
+   #:resume-music
+   #:rewind-music
+   #:set-music-position))
 
 (in-package :sdl2-mixer)
 
