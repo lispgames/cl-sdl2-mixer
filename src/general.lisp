@@ -138,8 +138,4 @@
 
 (defun set-music-position (position)
   "Set the position of currently playing music. It is highly recommended to read https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_65.html"
-  ;;Coercing here might be slow, but calling without coercion:
-  ;;(set-music-position 12.3) may get an error and
-  ;;(set-music-position 12.3d0) would run smoothly
-  ;;CL seems not to offer a clean cast function
-  (check-rc (mix-set-music-position (coerce position 'double-float))))
+  (check-rc (mix-set-music-position (* position 1.0d0))))
