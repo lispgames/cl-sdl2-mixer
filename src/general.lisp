@@ -138,4 +138,4 @@
 
 (defun set-music-position (position)
   "Set the position of currently playing music. It is highly recommended to read https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_65.html"
-  (check-rc (mix-set-music-position (* position 1.0d0))))
+  (check-rc (mix-set-music-position (float position 1d0))))
