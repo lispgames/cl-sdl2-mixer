@@ -105,3 +105,37 @@
 (defun volume-music (music-volume)
   "Adjust the volume of the music. Volume ranges from 0 to 128. The return value is an integer that usually represents the previous volume setting. Passing -1 as the music volume does not change the volume but instead returns the current volume setting"
   (mix-volume-music music-volume))
+
+(defun pause (&optional (channel -1))
+  "Pause channel, or all playing channels if -1 is passed in. You may still halt a paused channel"
+  (mix-pause channel))
+
+(defun resume (&optional (channel -1))
+  "Unpause channel, or all playing and paused channels if -1 is passed in"
+  (mix-resume channel))
+
+(defun paused (channel)
+  "Tells you if channel is paused, or not. Channel -1 returns the number of paused threads"
+  (if (= -1 channel)
+      (get-num-paused-channels)
+      (/= 0 (mix-paused channel))))
+
+(defun get-num-paused-channels ()
+  "Tells you the number of paused channels"
+  (mix-paused -1))
+
+(defun pause-music ()
+  "Pause the music playback. You may halt paused music"
+  (mix-pause-music))
+
+(defun resume-music ()
+  "Unpause the music. This is safe to use on halted, paused, and already playing music"
+  (mix-resume-music))
+
+(defun rewind-music ()
+  "Rewind the music to the start. This is safe to use on halted, paused, and already playing music. It is not useful to rewind the music immediately after starting playback, because it starts at the beggining by default"
+  (mix-rewind-music))
+
+(defun set-music-position (position)
+  "Set the position of currently playing music. It is highly recommended to read https://www.libsdl.org/projects/SDL_mixer/docs/SDL_mixer_65.html"
+  (check-rc (mix-set-music-position (float position 1d0))))
