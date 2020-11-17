@@ -1,4 +1,4 @@
-(in-package :sdl2-mixer)
+(in-package #:sdl2-mixer)
 
 (cffi:define-foreign-library libsdl2-mixer
   ;; I have no idea if this is the correct framework, file an issue

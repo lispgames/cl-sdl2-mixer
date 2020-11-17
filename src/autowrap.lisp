@@ -1,4 +1,4 @@
-(cl:in-package :sdl2-ffi)
+(cl:in-package #:sdl2-ffi)
 
 (autowrap:c-include
  `(sdl2-mixer autowrap-spec "SDL_mixer.h")

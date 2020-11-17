@@ -1,4 +1,4 @@
-(in-package :sdl2-mixer)
+(in-package #:sdl2-mixer)
 
 (define-condition sdl-mixer-error (sdl2::sdl-rc-error) ())
 

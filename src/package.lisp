@@ -1,12 +1,10 @@
-(in-package defpackage+-user-1)
+(in-package #:cl-user)
 
-(defpackage+ :sdl2-mixer
+(defpackage #:sdl2-mixer
   (:use #:cl #:alexandria #:autowrap.minimal #:plus-c #:sdl2-ffi.functions)
-  (:export-only
-
+  (:export
    ;; Conditions
    #:sdl-mixer-error
-
    ;; General
    #:linked-version
    #:init
@@ -26,8 +24,3 @@
    #:play-music
    #:halt-music
    #:volume-music))
-
-(in-package :sdl2-mixer)
-
- ;; Variables
-
