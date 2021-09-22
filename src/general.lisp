@@ -47,7 +47,7 @@ be one of the following values, :u8, :s8, :u16lsb, :s16lsb, :u16msb, :s16msb,
   "Closes the mixer"
   (mix-close-audio))
 
-(defun query-format ()
+(defun query-spec ()
   "Gets the output format in use by the opened audio device"
   (c-with ((freq :int)
            (fmt sdl2-ffi:uint16)
