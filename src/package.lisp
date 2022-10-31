@@ -22,5 +22,9 @@
    #:load-music
    #:free-music
    #:play-music
+   #:fade-in-music
+   #:pause-music
+   #:resume-music
+   #:fade-out-music
    #:halt-music
    #:volume-music))
