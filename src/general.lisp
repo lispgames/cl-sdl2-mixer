@@ -130,6 +130,24 @@ success -1 on error"
   (check-rc (mix-play-music mix-music-object
                             loops)))
 
+(defun fade-in-music (mix-music-object ms &optional (loops -1))
+  "Play a new music object, fading in the audio for MS milliseconds, looping as
+specified by the optional loops arguent. By default loops is -1 which makes the
+music loop indefinitely. Returns 0 on success."
+  (check-rc (mix-fade-in-music mix-music-object loops ms)))
+
+(defun pause-music ()
+  "Pause the music stream."
+  (mix-pause-music))
+
+(defun resume-music ()
+  "Resume the music stream."
+  (mix-resume-music))
+
+(defun fade-out-music (ms)
+  "Halt the music stream after fading it out for MS milliseconds."
+  (mix-fade-out-music ms))
+
 (defun halt-music ()
   "Halts the playback of all music"
   (mix-halt-music))
