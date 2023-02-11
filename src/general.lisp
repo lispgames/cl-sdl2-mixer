@@ -31,13 +31,21 @@ of these values or a combination thereof :ogg, :wave, :mod, :mp3"
   sdl2-ffi:+audio-u16+
   sdl2-ffi:+audio-s16+
   sdl2-ffi:+audio-u16sys+
-  sdl2-ffi:+audio-s16sys+)
+  sdl2-ffi:+audio-s16sys+
+  sdl2-ffi:+audio-s32lsb+
+  sdl2-ffi:+audio-s32msb+
+  sdl2-ffi:+audio-s32sys+
+  sdl2-ffi:+audio-s32+
+  sdl2-ffi:+audio-f32lsb+
+  sdl2-ffi:+audio-f32msb+
+  sdl2-ffi:+audio-f32sys+
+  sdl2-ffi:+audio-f32+)
 
 (defun open-audio (frequency format channels chunksize)
   "Initialize the mixer specifiying the output sample format, number of output
 channels (1 mono or 2 for stereo), and bytes used per output sample. format must
 be one of the following values, :u8, :s8, :u16lsb, :s16lsb, :u16msb, :s16msb,
-:u16, :s16, :u16sys, :s16sys"
+:u16, :s16, :u16sys, :s16sys, :s32lsb, :s32msb, :s32sys, :s32, :f32lsb, :f32msb, :f32sys, :f32"
   (check-rc (mix-open-audio frequency
                             (enum-value '(:enum (audio-format)) format)
                             channels
