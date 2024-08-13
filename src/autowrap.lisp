@@ -7,7 +7,12 @@
   :exclude-sources ("/usr/local/lib/clang/([^/]*)/include/(?!stddef.h)"
                     "/usr/include/"
                     "/usr/include/arm-linux-gnueabihf"
-                    "/usr/local/include/SDL2")
+                    "/usr/local/include/SDL2"
+                    #+darwin "/opt/homebrew/include/SDL2")
+  :sysincludes (cl:append
+                 #+darwin '("/opt/homebrew/include")
+                 (cl:if (uiop:getenv "C_INCLUDE_PATH")
+                   (uiop:split-string (uiop:getenv "C_INCLUDE_PATH") :separator ":")))
   :include-sources ("SDL_mixer.h")
   :exclude-constants ("^(?!MIX)")
   :symbol-exceptions (("SDL_RWops" . "SDL-RWOPS"))
