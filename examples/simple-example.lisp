@@ -1,7 +1,7 @@
 (in-package #:cl-user)
 
 (defpackage #:simple-example
-  (:use #:cl #:sdl2 #:cl-opengl)
+  (:use #:cl #:sdl2)
   (:export
    #:run-simple-example))
 
